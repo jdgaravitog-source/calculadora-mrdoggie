@@ -161,8 +161,8 @@
                 font-size: 8px !important;
             }
 
-            /* RESTORED: Tooltips visible on mobile as requested */
-            .compact-opt .hover-tip {
+            /* RESTORED: Tooltips visible on mobile - HIGH SPECIFICITY to override global rules */
+            html body .compact-opt .hover-tip {
                 display: block !important;
                 opacity: 1 !important;
                 max-height: 50px !important;
@@ -170,6 +170,7 @@
                 font-size: 9px !important;
                 color: #aaa !important;
                 font-weight: 500 !important;
+                visibility: visible !important;
             }
 
             /* Make buttons more compact to declutter footer */

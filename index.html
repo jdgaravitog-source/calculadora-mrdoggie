@@ -1514,6 +1514,21 @@
             display: none !important;
         }
 
+        /* Results Summary Grid */
+        .results-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px 12px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .results-summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px 5px;
+            }
+        }
+
         h2.res-title {
             text-align: center;
             margin-bottom: 8px;
@@ -2611,7 +2626,8 @@
                 </div>
 
                 <!-- ROW 2: Compact Stats -->
-                <div style="display:grid; grid-template-columns: repeat(6, 1fr); gap:8px 12px; align-items:center;">
+                <!-- ROW 2: Compact Stats -->
+                <div class="results-summary-grid">
                     
                     ${data.type === 'dog' ? `
                     <div class="badge-edit" onclick="goToStep('step2_Size')" style="display:flex; flex-direction:column;">

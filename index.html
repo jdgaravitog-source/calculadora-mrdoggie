@@ -332,21 +332,25 @@
         }
 
         .card-hint-icon {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.6);
-            background: rgba(0, 0, 0, 0.3);
-            padding: 2px 6px;
-            border-radius: 10px;
-            pointer-events: none;
-            display: flex;
+            /* Positioned relative to content flow now */
+            display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-weight: 500;
-            backdrop-filter: blur(2px);
+            margin-top: 6px;
+            /* Spacing from ingredients */
+
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            /* Subtle text */
+            background: rgba(255, 255, 255, 0.05);
+            /* Very subtle bg */
+            padding: 2px 8px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+
+            pointer-events: none;
+            font-weight: 500;
+            width: fit-content;
         }
 
         .hero-btn::before {
@@ -2889,16 +2893,16 @@
                                     <div class="dc-info">
                                         <div class="dc-title" style="color:${prod.color}">${prod.name}</div>
                                         <div class="dc-desc">${prod.ingreds}</div>
+                                        <!-- Interaction Hint Integrated -->
+                                        <div class="card-hint-icon">
+                                            <span>&#x21bb;</span> Ver detalle
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="dc-right">
                                     <div class="dc-grams">${dailyGrams}</div>
                                     <div class="dc-unit">g/día</div>
                                 </div>
-                            </div>
-                            <!-- Interaction Hint -->
-                            <div class="card-hint-icon">
-                                <span>&#x21bb;</span> Ver detalle
                             </div>
                         </div>
                         <div class="card-back">

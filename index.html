@@ -2199,6 +2199,8 @@
          */
 
         /* --- 1. STATE MANAGEMENT --- */
+        const STORAGE_KEY = 'mrdoggie_calc_v4_state'; // Persistence Key
+
         let currentStep = 0;
         let history = []; // Stores saved pet profiles
         let data = {
@@ -2212,6 +2214,119 @@
             neutered: null, // true | false
             condition: 4 // 1 to 7 scale
         };
+
+        /* --- PERSISTENCE LOGIC --- */
+        function saveState() {
+            try {
+                const state = {
+                    data: data,
+                    currentStep: currentStep,
+                    history: history,
+                    hasInteractedCond: hasInteractedCond
+                };
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                console.warn('Storage failed', e);
+            }
+        }
+
+        function loadState() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (!stored) return false;
+
+                const state = JSON.parse(stored);
+                if (state) {
+                    if (state.data) data = state.data;
+                    if (typeof state.currentStep === 'number') currentStep = state.currentStep;
+                    if (state.history) history = state.history;
+                    if (typeof state.hasInteractedCond === 'boolean') hasInteractedCond = state.hasInteractedCond;
+
+                    // DOM Restoration
+                    restoreDOM();
+                    return true;
+                }
+            } catch (e) {
+                console.warn('Load failed', e);
+            }
+            return false;
+        }
+
+        function restoreDOM() {
+            // Restore Inputs
+            const inputs = {
+                'clientName': data.clientName,
+                'petName': data.petName,
+                'petWeight': data.weight || '',
+                'petAgeYear': data.ageY || '',
+                'petAgeMonth': data.ageM || ''
+            };
+
+            for (const [id, val] of Object.entries(inputs)) {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            }
+
+            // Restore Selections
+            // Type
+            if (data.type) {
+                const dogs = document.getElementById('optDog');
+                const cats = document.getElementById('optCat');
+                if (dogs) dogs.classList.toggle('selected', data.type === 'dog');
+                if (cats) cats.classList.toggle('selected', data.type === 'cat');
+            }
+
+            // Size
+            if (data.size) {
+                document.querySelectorAll('.size-opt').forEach(el => {
+                    // Logic: match specific onclick or inspect element unique markers? 
+                    // Better: checking if the element corresponds to the size. 
+                    // The HTML has onclick="selectSize('mini', this)". 
+                    // We can check the onclick attribute or just find by text/img?
+                    // Easiest: The HTML for sizes is static. We can use index or selectors if they had specific IDs.
+                    // They don't have IDs. Let's rely on the onclick attribute content or modify HTML to add IDs?
+                    // "Restricciones: No modificar diseño... No cambiar textos".
+                    // I'll assume standard layout or text content matching.
+                    // Actually, I can search by onclick attribute string which contains the key.
+                    const fn = el.getAttribute('onclick');
+                    if (fn && fn.includes(`'${data.size}'`)) el.classList.add('selected');
+                    else el.classList.remove('selected');
+                });
+            }
+
+            // Activity
+            if (data.activity) {
+                document.querySelectorAll('.life-option-card').forEach(el => {
+                    const fn = el.getAttribute('onclick');
+                    if (fn && fn.includes(`selectActivity`) && fn.includes(`'${data.activity}'`)) {
+                        el.classList.add('selected');
+                    }
+                });
+            }
+
+            // Neutered
+            if (data.neutered !== null) {
+                document.querySelectorAll('.btn-neutered').forEach(el => {
+                    const fn = el.getAttribute('onclick');
+                    if (fn && fn.includes(data.neutered.toString())) { // boolean to string 'true' or 'false'
+                        el.classList.add('selected');
+                    }
+                });
+            }
+
+            // Condition
+            if (hasInteractedCond) {
+                const slider = document.getElementById('bodyCondition');
+                if (slider) slider.value = data.condition;
+                updateCondition(data.condition, true);
+            }
+
+            // Months visibility
+            const monthsContainer = document.getElementById('monthsContainer');
+            if (monthsContainer) {
+                monthsContainer.style.display = (data.ageY < 2) ? 'block' : 'none';
+            }
+        }
 
         /* --- 2. CONFIGURATION --- */
         const PRODUCTS_DB = {
@@ -2382,6 +2497,7 @@
         let hasInteractedCond = false;
 
         function validateCurrent() {
+            saveState(); // Auto-save on every validation check (triggered by inputs/nav)
             const steps = getSteps();
             const stepId = steps[currentStep];
             let valid = false;
@@ -2828,6 +2944,7 @@
 
         function resetCalculamor() {
             const client = data.clientName;
+            localStorage.removeItem(STORAGE_KEY); // Clear persistence
             data = {
                 clientName: client, petName: '', type: '', size: '',
                 weight: 0, ageY: 0, ageM: 0, activity: '', neutered: null, condition: 4
@@ -2857,6 +2974,7 @@
         }
 
         // Initialize
+        loadState(); // Restore previous session if exists
         updateUI();
 
     </script>

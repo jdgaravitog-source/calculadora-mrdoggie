@@ -116,63 +116,80 @@
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 0 !important;
-                padding: 15px 25px !important;
+                padding: 10px 15px !important;
+                /* Reduced padding */
                 background: #121212 !important;
-                /* Solid background for readability */
                 border-top: 1px solid #333;
                 z-index: 99999 !important;
                 box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
-                gap: 15px;
-                /* Better spacing */
+                gap: 10px;
+                /* Reduced gap */
+            }
+
+            .wizard-header img.brand-logo {
+                height: 70px !important;
+                /* Smaller logo to gain space */
+            }
+
+            .slide h2 {
+                font-size: 18px !important;
+                margin-top: 0 !important;
+                margin-bottom: 10px !important;
             }
 
             /* Ensure content isn't hidden behind fixed nav */
             .slide {
-                padding-bottom: 110px !important;
+                padding-bottom: 90px !important;
+                padding-top: 10px !important;
+                /* Move up */
             }
 
             /* User requested smaller icons on mobile to avoid cramped layout */
             .big-option img {
-                height: 35px !important;
+                height: 32px !important;
+                /* Even smaller */
                 width: auto !important;
-                margin-bottom: 5px !important;
+                margin-bottom: 3px !important;
             }
 
             .big-option {
-                padding: 12px 8px !important;
-                min-height: 90px !important;
+                padding: 8px 5px !important;
+                min-height: 80px !important;
             }
 
             .opt-label {
-                font-size: 9px !important;
+                font-size: 8px !important;
             }
 
             .hover-tip {
                 display: none !important;
-                /* Hide tips on mobile to save space */
             }
 
-            /* Make buttons bigger/easier to tap */
+            /* Make buttons more compact to declutter footer */
             .btn-nav-next {
-                padding: 14px 28px !important;
-                font-size: 14px !important;
+                padding: 10px 20px !important;
+                font-size: 13px !important;
                 width: 100%;
-                /* Full width availability */
                 justify-content: center;
             }
 
             .btn-nav-back {
-                padding: 14px 20px !important;
+                padding: 10px 15px !important;
+                font-size: 13px !important;
                 background: rgba(255, 255, 255, 0.05) !important;
-                /* Visually distinct area */
+            }
+
+            #btnQuickFinish {
+                padding: 10px 12px !important;
+                font-size: 10px !important;
             }
 
             .calculator-container {
                 height: 100% !important;
-                /* Allow full flow */
                 max-height: none !important;
             }
         }
+
 
         /* Hide nav actions on step 0 (intro) and last step (results) if desired, 
            or handle visibility via JS. We'll handle via JS class 'hidden' */

@@ -161,15 +161,25 @@
                 font-size: 8px !important;
             }
 
-            /* RESTORED: Tooltips visible on mobile - HIGH SPECIFICITY to override global rules */
+            /* REFINED: Dynamic tooltips on mobile (Hidden default, Show on Hover/Selected) */
+            /* Default: Hidden */
             html body .compact-opt .hover-tip {
                 display: block !important;
+                /* Ensure layout allows it when visible */
+                opacity: 0 !important;
+                max-height: 0 !important;
+                margin-top: 0 !important;
+                overflow: hidden !important;
+                visibility: hidden !important;
+                transition: all 0.3s ease !important;
+            }
+
+            /* Interaction: Visible on Hover (touch press) or Selected */
+            html body .compact-opt:hover .hover-tip,
+            html body .compact-opt.selected .hover-tip {
                 opacity: 1 !important;
                 max-height: 50px !important;
                 margin-top: 4px !important;
-                font-size: 9px !important;
-                color: #aaa !important;
-                font-weight: 500 !important;
                 visibility: visible !important;
             }
 
